@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A fully responsive image tool for compression and customization of various image and document formats.">
+    <meta name="keywords" content="image compression, image converter, document converter, SEO optimized tool">
+    <meta name="author" content="Your Name">
+    <title>Image & Document Tool</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        /* Upload Section */
+        #upload-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .upload-label {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-label:hover {
+            background-color: #0056b3;
+        }
+
+        /* Options Section */
+        #options-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        #format-select, #compression-level {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        #process-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #process-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Output Section */
+        #output-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #output {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            main {
+                padding: 40px;
+            }
+
+            #upload-section, #options-section, #output-section {
+                padding: 30px;
+            }
+
+            .form-group {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .form-group label {
+                margin-bottom: 0;
+                flex: 1;
+            }
+
+            #format-select, #compression-level {
+                flex: 2;
+            }
+
+            #process-btn {
+                width: auto;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Image & Document Tool</h1>
+    </header>
+    <main>
+        <!-- Upload Section -->
+        <section id="upload-section">
+            <label for="file-input" class="upload-label">Choose File</label>
+            <input type="file" id="file-input" accept="image/*, .pdf, .doc, .docx, .txt">
+            <span id="file-name"></span>
+        </section>
+
+        <!-- Options Section -->
+        <section id="options-section">
+            <div class="form-group">
+                <label for="format-select">Select Format:</label>
+                <select id="format-select">
+                    <option value="png">PNG</option>
+                    <option value="jpeg">JPEG</option>
+                    <option value="gif">GIF</option>
+                    <option value="bmp">BMP</option>
+                    <option value="eps">EPS</option>
+                    <option value="ico">ICO</option>
+                    <option value="tiff">TIFF</option>
+                    <option value="webp">WEBP</option>
+                    <option value="pdf">PDF</option>
+                    <option value="doc">DOC</option>
+                    <option value="docx">DOCX</option>
+                    <option value="txt">TXT</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="compression-level">Compression Level:</label>
+                <input type="range" id="compression-level" min="0" max="100" value="50">
+            </div>
+            <button id="process-btn">Process File</button>
+        </section>
+
+        <!-- Output Section -->
+        <section id="output-section">
+            <h2>Processed File</h2>
+            <div id="output"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Image & Document Tool. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // JavaScript for Dynamic Functionality
+        document.getElementById('file-input').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        document.getElementById('process-btn').addEventListener('click', function() {
+            const format = document.getElementById('format-select').value;
+            const compressionLevel = document.getElementById('compression-level').value;
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+
+            if (file) {
+                alert(`Processing file "${file.name}" to ${format} format with compression level ${compressionLevel}.`);
+                // Here you would send the file to a backend for processing
+                // For now, we'll just display a placeholder message
+                document.getElementById('output').innerHTML = `<p>File processed to ${format} format with compression level ${compressionLevel}.</p>`;
+            } else {
+                alert('Please select a file to process.');
+            }
+        });
+    </script>
+</body>
+</html>
